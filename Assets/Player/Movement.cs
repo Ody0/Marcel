@@ -23,6 +23,10 @@ public class Movement : MonoBehaviour
     public float slopeRotationSpeed = 10f;
     public float groundCheckDistance = 1.2f; // Distance to check below the player for ground
 
+    private bool isGrounded;
+
+    public bool canPlay = true;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -31,16 +35,22 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        movInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        if (canPlay)
+        {
+            movInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-        isRunning = Input.GetKey(KeyCode.LeftShift);
+            isRunning = Input.GetKey(KeyCode.LeftShift);
+            speed = isRunning ? runSpeed : walkSpeed;
 
-        speed = isRunning ? runSpeed : walkSpeed;
-
-        Move();
-        PlayerRotation();
-        ModelSlopeAlignment(); // Call the slope alignment function for the model
-        Anims();
+            Move();
+            PlayerRotation();
+            ModelSlopeAlignment();
+            Anims();
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
     }
 
     private void Move()
@@ -53,23 +63,30 @@ public class Movement : MonoBehaviour
 
         Vector3 moveDirection = (camForward * movInput.y + camRight * movInput.x).normalized;
         rb.velocity = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
+
+
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            anims.SetTrigger("jump");
+            rb.velocity = rb.transform.up * 12;
+        }
     }
 
     private void PlayerRotation()
     {
         if (isMoving)
         {
-            // Calculate movement direction
-            Vector3 moveDirection = new Vector3(movInput.x, 0, movInput.y).normalized;
+            // Calculate movement direction based on input and camera
             Vector3 camForward = cameraTransform.forward;
             Vector3 camRight = cameraTransform.right;
 
             camForward.y = 0;
             camRight.y = 0;
 
+            Vector3 moveDirection = new Vector3(movInput.x, 0, movInput.y).normalized;
             Vector3 desiredDirection = (camForward * moveDirection.z + camRight * moveDirection.x).normalized;
 
-            // Rotate the main player object to face the movement direction
+            // Rotate only on the Y-axis based on movement direction
             Quaternion targetRotation = Quaternion.LookRotation(desiredDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * slopeRotationSpeed);
         }
@@ -78,20 +95,34 @@ public class Movement : MonoBehaviour
     private void ModelSlopeAlignment()
     {
         RaycastHit hit;
-        if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundCheckDistance))
+        isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundCheckDistance);
+
+        if (isGrounded)
         {
-            // Use the ground's normal to adjust the model's rotation on slopes
+            // Align model to ground slope (X and Z alignment)
             Vector3 groundNormal = hit.normal;
             Quaternion slopeRotation = Quaternion.FromToRotation(modelTransform.up, groundNormal) * modelTransform.rotation;
 
-            // Smoothly rotate the model to match the ground's slope
+            // Lock the Y rotation to match the player's facing direction
+            float fixedYRotation = modelTransform.eulerAngles.y;
+            slopeRotation = Quaternion.Euler(slopeRotation.eulerAngles.x, fixedYRotation, slopeRotation.eulerAngles.z);
+
+            // Smoothly rotate the model to match the ground's slope while keeping Y-axis fixed
             modelTransform.rotation = Quaternion.Slerp(modelTransform.rotation, slopeRotation, Time.deltaTime * slopeRotationSpeed);
         }
+        else
+        {
+            // Reset X and Z rotation when in the air, and lock Y rotation
+            Quaternion targetRotation = Quaternion.Euler(0, modelTransform.eulerAngles.y, 0);
+            modelTransform.rotation = Quaternion.Slerp(modelTransform.rotation, targetRotation, Time.deltaTime * slopeRotationSpeed);
+        }
     }
+
 
     private void Anims()
     {
         isMoving = rb.velocity.magnitude > 0.2f;
+        anims.SetBool("isGrounded", isGrounded);
         anims.SetBool("walking", isMoving);
         anims.SetBool("running", isRunning);
     }
