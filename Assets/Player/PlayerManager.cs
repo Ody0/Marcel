@@ -15,6 +15,8 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager Instance;
 
+    public GameObject RestUI;
+
     public void Awake()
     {
         Instance = this;
@@ -31,6 +33,8 @@ public class PlayerManager : MonoBehaviour
 
             PauseMenu.SetActive(true);
             move.canPlay = false;
+
+            RestUI.SetActive(false);
         }
 
 

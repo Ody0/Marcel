@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: BP
   m_Shader: {fileID: -6465566751694194690, guid: 1d738c8110d0e154aac76acfa905ac32,
     type: 3}
   m_Parent: {fileID: 0}
@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_79BA51A6:
-        m_Texture: {fileID: 2800000, guid: 60d9ae2aadba69c4d96818523b1810d3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5c5832a3b0f2afa4181d352f22d865a9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -86,10 +86,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_37163E29: 0.68
-    - Vector1_AE9DFBD: 0
+    - Vector1_37163E29: 0.43
+    - Vector1_AE9DFBD: 0.21
     - Vector1_D65B033B: 0.6
-    - Vector1_E266B039: 0.95
+    - Vector1_E266B039: 0.05
     - _Alpha: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -123,7 +123,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_63659391: {r: 0, g: 0.23109634, b: 16.188803, a: 0}
+    - Color_63659391: {r: 0, g: 0.11554817, b: 8.094401, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

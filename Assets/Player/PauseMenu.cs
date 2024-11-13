@@ -11,12 +11,15 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject camMan;
 
+    public GameObject RestUI;
+
     public void ResumeGame()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         movement.canPlay = true;
+        RestUI.SetActive(true);
         camMan.SetActive(true);
         canvas.SetActive(false);
     }

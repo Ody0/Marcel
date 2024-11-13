@@ -24,7 +24,12 @@ public class PlayerBuildManager : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    buildObj.transform.position = hit.point;
+                    float _x = Mathf.RoundToInt(hit.point.x);
+                    float _y = Mathf.RoundToInt(hit.point.y);
+                    float _z = Mathf.RoundToInt(hit.point.z);
+
+
+                    buildObj.transform.position = new Vector3(_x, _y, _z);
                 }
 
                 buildObj.transform.rotation = Quaternion.Euler(buildObj.transform.rotation.x, rot, buildObj.transform.rotation.z);
