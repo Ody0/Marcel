@@ -58,6 +58,19 @@ public class SaveManager : MonoBehaviour
             data.ObjectRot.Add(saveable.transform.rotation);
         }
 
+        foreach(int i in PlayerManager.Instance.GetComponent<Inventory>().ID_Prefabs)
+        {
+            data.PlayerInventoryID.Add(i);
+        }
+
+
+        DestroyableObject[] destroyableObjects = FindObjectsOfType<DestroyableObject>();
+        foreach (DestroyableObject destroyable in destroyableObjects)
+        {
+            destroyable.SaveGame(); // Example function call
+        }
+
+
         //Storage
 
 
@@ -104,6 +117,21 @@ public class SaveManager : MonoBehaviour
                     load_pos++;
                 }
 
+
+                for (int i = 0; i < PlayerManager.Instance.GetComponent<Inventory>().slots.Length; i++)
+                {
+                    PlayerManager.Instance.GetComponent<Inventory>().ID_Prefabs[i] = currentProgressionData.PlayerInventoryID[i];
+                }
+                PlayerManager.Instance.GetComponent<Inventory>().RefreshInventory();
+
+
+                DestroyableObject[] destroyableObjects = FindObjectsOfType<DestroyableObject>();
+                foreach (DestroyableObject destroyable in destroyableObjects)
+                {
+                    destroyable.LoadGame(); // Example function call
+                }
+
+
                 //Re-Store
 
 
@@ -133,6 +161,8 @@ public class GameData
 
     public List<Vector3> ObjectsPos = new List<Vector3>();
     public List<Quaternion> ObjectRot = new List<Quaternion>();
+
+    public List<int> PlayerInventoryID = new List<int>();
 
 }
 

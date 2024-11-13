@@ -12,6 +12,10 @@ public class PlayerBuildManager : MonoBehaviour
 
     int rot = 0;
 
+    public AudioSource buildSound;
+
+    public float cellSize;
+
     public void Update()
     {
         if (isBuilding)
@@ -24,12 +28,14 @@ public class PlayerBuildManager : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    float _x = Mathf.RoundToInt(hit.point.x);
-                    float _y = Mathf.RoundToInt(hit.point.y);
-                    float _z = Mathf.RoundToInt(hit.point.z);
+                    Vector3 pointScaled = (hit.point / cellSize);
+
+                    int _x = Mathf.RoundToInt(pointScaled.x);
+                    int _y = Mathf.RoundToInt(pointScaled.y);
+                    int _z = Mathf.RoundToInt(pointScaled.z);
 
 
-                    buildObj.transform.position = new Vector3(_x, _y, _z);
+                    buildObj.transform.position = new Vector3(_x, _y, _z) * cellSize;
                 }
 
                 buildObj.transform.rotation = Quaternion.Euler(buildObj.transform.rotation.x, rot, buildObj.transform.rotation.z);
@@ -40,9 +46,9 @@ public class PlayerBuildManager : MonoBehaviour
         {
             if(buildObj != null)
             {
+                CameraShake.Instance.ShakeCamera();
+                buildSound.Play();
                 Instantiate(buildObj.GetComponent<BlueprintObject>().prefab, buildObj.transform.position, buildObj.transform.rotation);
-                Destroy(buildObj);
-                isBuilding = false;
             }
         }
         if (Input.GetMouseButtonDown(1))
@@ -53,7 +59,13 @@ public class PlayerBuildManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rot += 45;
+            rot += 90;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Destroy(buildObj);
+            isBuilding = false;
         }
     }
 }

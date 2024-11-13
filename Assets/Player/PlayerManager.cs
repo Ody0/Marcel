@@ -26,15 +26,30 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            if(PauseMenu.activeSelf == false)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
 
-            camMan.SetActive(false);
+                camMan.SetActive(false);
 
-            PauseMenu.SetActive(true);
-            move.canPlay = false;
+                PauseMenu.SetActive(true);
+                move.canPlay = false;
 
-            RestUI.SetActive(false);
+                RestUI.SetActive(false);
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+                camMan.SetActive(true);
+
+                PauseMenu.SetActive(false);
+                move.canPlay = true;
+
+                RestUI.SetActive(true);
+            }
         }
 
 
@@ -48,7 +63,6 @@ public class PlayerManager : MonoBehaviour
                 camMan.SetActive(false);
 
                 buildMenu.SetActive(true);
-                move.canPlay = false;
             }
             else
             {
@@ -68,6 +82,5 @@ public class PlayerManager : MonoBehaviour
         camMan.SetActive(true);
 
         buildMenu.SetActive(false);
-        move.canPlay = true;
     }
 }
