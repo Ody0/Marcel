@@ -62,15 +62,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   gaussianStart:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 10
   gaussianEnd:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 30
   gaussianMaxRadius:
     m_OverrideState: 0
@@ -139,6 +139,7 @@ MonoBehaviour:
   - {fileID: -7217429291842373967}
   - {fileID: -1247867311549953358}
   - {fileID: -3648743752535575868}
+  - {fileID: 3049511315094384901}
 --- !u!114 &2977684849818083591
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -166,6 +167,25 @@ MonoBehaviour:
     m_Value: 0.2
   rounded:
     m_OverrideState: 1
+    m_Value: 0
+--- !u!114 &3049511315094384901
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
+  m_Name: WhiteBalance
+  m_EditorClassIdentifier: 
+  active: 1
+  temperature:
+    m_OverrideState: 1
+    m_Value: -1
+  tint:
+    m_OverrideState: 0
     m_Value: 0
 --- !u!114 &3055962928457348541
 MonoBehaviour:
