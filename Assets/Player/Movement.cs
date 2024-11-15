@@ -43,6 +43,7 @@ public class Movement : MonoBehaviour
             speed = isRunning ? runSpeed : walkSpeed;
 
             Move();
+            Jump();
             PlayerRotation();
             ModelSlopeAlignment();
             Anims();
@@ -51,6 +52,11 @@ public class Movement : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
         }
+    }
+
+    public void FixedUpdate()
+    {
+        Move();
     }
 
     private void Move()
@@ -63,9 +69,11 @@ public class Movement : MonoBehaviour
 
         Vector3 moveDirection = (camForward * movInput.y + camRight * movInput.x).normalized;
         rb.velocity = new Vector3(moveDirection.x * speed, rb.velocity.y, moveDirection.z * speed);
+    }
 
-
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+    public void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             anims.SetTrigger("jump");
             rb.velocity = rb.transform.up * 12;
@@ -88,7 +96,7 @@ public class Movement : MonoBehaviour
 
             // Rotate only on the Y-axis based on movement direction
             Quaternion targetRotation = Quaternion.LookRotation(desiredDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * slopeRotationSpeed);
+            rb.transform.rotation = Quaternion.Slerp(rb.transform.rotation, targetRotation, Time.deltaTime * slopeRotationSpeed);
         }
     }
 

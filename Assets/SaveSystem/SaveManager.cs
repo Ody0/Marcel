@@ -28,6 +28,9 @@ public class SaveManager : MonoBehaviour
 
     public void SaveProgression()
     {
+
+        loadingCanvas.Play("Idle");
+
         GameData data = new GameData();
 
         //Storage
